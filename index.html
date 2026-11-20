@@ -8,7 +8,7 @@
 <style>
 *{box-sizing:border-box}
 :root{--dark:#171717;--gold:#d6a62e;--light:#f5f5f5;--red:#d62828;--green:#168447}
-body{margin:0;font-family:Arial,sans-serif;background:#f4f5f7;color:#222}
+body{margin:0;font-family:Arial,sans-serif;background:#dceeff;color:#222}
 header{background:var(--dark);color:#fff;padding:16px 4%;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .brand{font-size:23px;font-weight:800;color:#f2c14e}
 nav{display:flex;gap:15px;flex-wrap:wrap}
@@ -50,6 +50,12 @@ label{font-weight:bold;font-size:14px}
 .hidden{display:none!important}
 .status{padding:10px;border-radius:7px;background:#f4f4f4;margin:10px 0}
 .discount-line{color:var(--green);font-weight:bold}
+.option-group{margin:12px 0}
+.option-title{display:block;font-weight:bold;font-size:14px;margin-bottom:7px}
+.option-list{display:flex;flex-wrap:wrap;gap:7px}
+.option-chip{background:#e8edf3;color:#222;border:1px solid #c7d0da;border-radius:6px;padding:8px 12px;min-width:42px}
+.option-chip.selected{background:#d62828;color:#fff;border-color:#d62828}
+.quantity-options{display:flex;flex-wrap:wrap;gap:7px}
 footer{text-align:center;background:#171717;color:#ddd;padding:22px;margin-top:35px}
 footer a{color:#f2c14e}
 @media(max-width:600px){.hero h1{font-size:27px}header{justify-content:center;text-align:center}nav{justify-content:center}.product-image{height:270px}}
@@ -202,17 +208,20 @@ function renderProducts(){
   if(!available.length){box.innerHTML="<p>No shoes available yet.</p>";return;}
   box.innerHTML=available.map(p=>{
     const sizes=parseSizes(p.size);
-    const sizeOptions=sizes.length?sizes.map(s=>`<option value="${safe(s)}">${safe(s)}</option>`).join(""):'<option value="">No sizes added</option>';
+    const colors=parseSizes(p.color);
+    const sizeChips=sizes.length?sizes.map(s=>`<button type="button" class="option-chip" id="size-${safe(p.id)}-${safe(s)}" onclick="selectProductOption('${p.id}','size','${safe(s)}')">${safe(s)}</button>`).join(""):'<span class="small">No sizes added</span>';
+    const colorChips=colors.length?colors.map(c=>`<button type="button" class="option-chip" id="color-${safe(p.id)}-${safe(c)}" onclick="selectProductOption('${p.id}','color','${safe(c)}')">${safe(c)}</button>`).join(""):'<span class="small">No colours added</span>';
     return `<article class="card">
       <div class="product-image"><img src="${safe(p.imageUrl)}" alt="${safe(p.name)}" loading="lazy" onerror="this.alt='Product image unavailable';this.style.visibility='hidden'"></div>
       <div class="card-body">
         <h3>${safe(p.name)}</h3>
         <span class="discount-badge">10% OFF</span>
         <div class="price">${money(discountedPrice(p.price))}<span class="old-price">${money(p.price)}</span></div>
+        <div class="option-group"><span class="option-title">Choose Size *</span><div class="option-list">${sizeChips}</div></div>
+        <div class="option-group"><span class="option-title">Choose Colour *</span><div class="option-list">${colorChips}</div></div>
+        <div class="option-group"><span class="option-title">Quantity *</span><div class="quantity-options">${[1,2,3,4,5,6,7,8,9,10].map(q=>`<button type="button" class="option-chip ${q===1?"selected":""}" id="qty-${safe(p.id)}-${q}" onclick="selectProductQuantity('${p.id}',${q})">${q}</button>`).join("")}</div></div>
         <p class="muted">${safe(p.description||"")}</p>
-        <p class="muted"><b>Color:</b> ${safe(p.color||"As shown")}<br><b>Code:</b> ${safe(p.productCode||"-")}</p>
-        <label for="size-${safe(p.id)}">Choose Shoe Size *</label>
-        <select id="size-${safe(p.id)}" ${sizes.length?"":"disabled"}>${sizeOptions}</select>
+        <p class="muted"><b>Product Code:</b> ${safe(p.productCode||"-")}</p>
         <div class="actions"><button onclick="addToCart('${p.id}')">Add to Cart</button><button class="share-btn" onclick="shareProduct('${p.id}')">Share Product</button></div>
       </div></article>`;
   }).join("");
@@ -226,19 +235,39 @@ async function loadProducts(){
     if(requested){const found=productsCache.find(p=>p.id===requested);if(found)setTimeout(()=>{document.getElementById("shoes").scrollIntoView({behavior:"smooth"});alert(found.name+" — "+money(discountedPrice(found.price))+" after 10% discount.");},300);}
   }catch(e){$("products").innerHTML="<p>Products could not load: "+safe(e.message)+"</p>";}
 }
+const selectedProductOptions = {};
+const selectedProductQuantities = {};
+window.selectProductQuantity=function(id,quantity){
+  selectedProductQuantities[id]=quantity;
+  document.querySelectorAll(`[id^="qty-${id}-"]`).forEach(el=>el.classList.remove("selected"));
+  const chosen=document.getElementById(`qty-${id}-${quantity}`);
+  if(chosen)chosen.classList.add("selected");
+};
+window.selectProductOption=function(id,type,value){
+  if(!selectedProductOptions[id])selectedProductOptions[id]={size:"",color:""};
+  selectedProductOptions[id][type]=value;
+  const prefix=type+"-"+id+"-";
+  document.querySelectorAll(`[id^="${prefix}"]`).forEach(el=>el.classList.remove("selected"));
+  const chosen=document.getElementById(prefix+value);
+  if(chosen)chosen.classList.add("selected");
+};
 window.addToCart=function(id){
   const p=productsCache.find(x=>x.id===id);if(!p)return alert("Product not found.");
-  const sizeSelect=$("size-"+id);const size=sizeSelect?.value;
-  if(!size)return alert("Please select an available shoe size.");
-  const existing=cart.find(x=>x.id===id&&x.size===size);
-  if(existing)existing.qty++;
-  else cart.push({id:p.id,name:p.name,price:Number(p.price),size,qty:1});
+  const chosen=selectedProductOptions[id]||{};
+  const sizes=parseSizes(p.size),colors=parseSizes(p.color);
+  const size=chosen.size,color=chosen.color;
+  if(sizes.length&&!size)return alert("Please click and select a shoe size.");
+  if(colors.length&&!color)return alert("Please click and select a colour.");
+  const quantity=selectedProductQuantities[id]||1;
+  const existing=cart.find(x=>x.id===id&&x.size===(size||"Not specified")&&x.color===(color||"Not specified"));
+  if(existing)existing.qty+=quantity;
+  else cart.push({id:p.id,name:p.name,price:Number(p.price),size:size||"Not specified",color:color||"Not specified",qty:quantity});
   renderCart();$("cart").scrollIntoView({behavior:"smooth"});
 };
 function renderCart(){
   const box=$("cartItems");
   if(!cart.length){box.textContent="Your cart is empty.";$("cartSubtotal").textContent=money(0);$("cartDiscount").textContent="- "+money(0);$("cartTotal").textContent="Total to Pay: "+money(0);return;}
-  box.innerHTML=cart.map((item,i)=>`<div class="cart-row"><div><b>${safe(item.name)}</b><br><span class="small">Size: ${safe(item.size)} · ${money(discountedPrice(item.price))} after discount each</span></div><div class="qty"><button class="secondary" onclick="changeQty(${i},-1)">−</button><b>${item.qty}</b><button class="secondary" onclick="changeQty(${i},1)">+</button><button class="danger" onclick="removeCartItem(${i})">Remove</button></div></div>`).join("");
+  box.innerHTML=cart.map((item,i)=>`<div class="cart-row"><div><b>${safe(item.name)}</b><br><span class="small">Size: ${safe(item.size)} · Colour: ${safe(item.color||"Not specified")} · ${money(discountedPrice(item.price))} after discount each</span></div><div class="qty"><button class="secondary" onclick="changeQty(${i},-1)">−</button><b>${item.qty}</b><button class="secondary" onclick="changeQty(${i},1)">+</button><button class="danger" onclick="removeCartItem(${i})">Remove</button></div></div>`).join("");
   const subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0);
   const discount=subtotal*DISCOUNT_RATE;
   const total=cart.reduce((s,x)=>s+discountedPrice(x.price)*x.qty,0);
@@ -255,7 +284,7 @@ window.placeOrder=async function(){
   const subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0);
   const discount=Math.round(subtotal*DISCOUNT_RATE);
   const total=cart.reduce((s,x)=>s+discountedPrice(x.price)*x.qty,0);
-  const items=cart.map(x=>({productId:x.id,name:x.name,price:x.price,discountedUnitPrice:discountedPrice(x.price),size:x.size,quantity:x.qty,lineTotal:discountedPrice(x.price)*x.qty}));
+  const items=cart.map(x=>({productId:x.id,name:x.name,price:x.price,discountedUnitPrice:discountedPrice(x.price),size:x.size,color:x.color||"Not specified",quantity:x.qty,lineTotal:discountedPrice(x.price)*x.qty}));
   const btn=$("placeOrderBtn");btn.disabled=true;btn.textContent="Placing order...";
   try{
     const orderRef=await addDoc(collection(db,"orders"),{customerName,customerPhone,customerEmail,customerAddress,paymentMethod,items,subtotal,discount,total,status:"Pending",createdAt:serverTimestamp()});
@@ -319,7 +348,7 @@ async function loadAdminData(){
     const orders=snap.docs.map(d=>({id:d.id,...d.data()}));const box=$("adminOrders");
     if(!orders.length){box.textContent="No customer orders yet.";return;}
     box.innerHTML=orders.map(o=>{
-      const itemText=(o.items||[]).map(i=>`${safe(i.name)} — Size ${safe(i.size)} — Qty ${safe(i.quantity)} — ${money(i.lineTotal)}`).join("<br>");
+      const itemText=(o.items||[]).map(i=>`${safe(i.name)} — Size ${safe(i.size)} — Colour ${safe(i.color||"Not specified")} — Qty ${safe(i.quantity)} — ${money(i.lineTotal)}`).join("<br>");
       return `<div class="panel"><b>Order: ${safe(o.id)}</b><p><b>Customer:</b> ${safe(o.customerName)} | ${safe(o.customerPhone)}<br><b>Email:</b> ${safe(o.customerEmail||"Not provided")}<br><b>Address:</b> ${safe(o.customerAddress)}<br><b>Payment:</b> ${safe(o.paymentMethod||"-")}</p><p>${itemText}</p><p>Subtotal: ${money(o.subtotal)}<br>Discount: -${money(o.discount)}</p><b>Total: ${money(o.total)}</b><p><label>Status</label><select id="status-${safe(o.id)}">${["Pending","Confirmed","Shipped","Delivered","Cancelled"].map(s=>`<option ${o.status===s?"selected":""}>${s}</option>`).join("")}</select><button onclick="updateOrderStatus('${o.id}')">Update Status</button></p></div>`;
     }).join("");
   }catch(e){$("adminOrders").innerHTML="Orders error: "+safe(e.message);}
