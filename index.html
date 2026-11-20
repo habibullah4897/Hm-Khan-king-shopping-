@@ -145,7 +145,7 @@ footer a{color:#f2c14e}
         <p class="small">Paste a direct image URL from an image hosting website. Firebase Storage is not used. Free delivery is available all over Pakistan.</p>
         <div id="imagePreviewBox" class="hidden"><img id="imagePreview" alt="Image preview" style="max-width:220px;max-height:180px;object-fit:contain"></div>
         <p><label><input id="pAvailable" type="checkbox" checked style="width:auto;margin-right:7px">Available for sale</label></p>
-        <button type="submit" id="saveProductBtn">Save Product</button>
+        <button type="submit" id="saveProductBtn" class="danger">Save Product</button>
         <button type="button" class="secondary" onclick="resetProductForm()">Clear Form</button>
       </form>
       <h3>Manage Shoes</h3><div id="adminProducts">Loading products...</div>
@@ -352,7 +352,7 @@ async function loadAdminData(){
     if(!orders.length){box.textContent="No customer orders yet.";return;}
     box.innerHTML=orders.map(o=>{
       const itemText=(o.items||[]).map(i=>`${safe(i.name)} — Size ${safe(i.size)} — Colour ${safe(i.color||"Not specified")} — Qty ${safe(i.quantity)} — ${money(i.lineTotal)}`).join("<br>");
-      return `<div class="panel"><b>Order: ${safe(o.id)}</b><p><b>Customer:</b> ${safe(o.customerName)} | ${safe(o.customerPhone)}<br><b>Email:</b> ${safe(o.customerEmail||"Not provided")}<br><b>Address:</b> ${safe(o.customerAddress)}<br><b>Payment:</b> ${safe(o.paymentMethod||"-")}</p><p>${itemText}</p><p>Subtotal: ${money(o.subtotal)}<br>Discount: -${money(o.discount)}<br>Delivery: FREE</p><b>Total: ${money(o.total)}</b><p><label>Status</label><select id="status-${safe(o.id)}">${["Pending","Confirmed","Shipped","Delivered","Cancelled"].map(s=>`<option ${o.status===s?"selected":""}>${s}</option>`).join("")}</select><button onclick="updateOrderStatus('${o.id}')">Update Status</button></p></div>`;
+      return `<div class="panel"><b>Order: ${safe(o.id)}</b><p><b>Customer:</b> ${safe(o.customerName)} | ${safe(o.customerPhone)}<br><b>Email:</b> ${safe(o.customerEmail||"Not provided")}<br><b>Address:</b> ${safe(o.customerAddress)}<br><b>Payment:</b> ${safe(o.paymentMethod||"-")}</p><p>${itemText}</p><p>Subtotal: ${money(o.subtotal)}<br>Discount: -${money(o.discount)}<br>Delivery: FREE</p><b>Total: ${money(o.total)}</b><p><label>Status</label><select id="status-${safe(o.id)}">${["Pending","Confirmed","Shipped","Delivered","Cancelled"].map(s=>`<option ${o.status===s?"selected":""}>${s}</option>`).join("")}</select><button class="danger" onclick="updateOrderStatus('${o.id}')">Update Status</button></p></div>`;
     }).join("");
   }catch(e){$("adminOrders").innerHTML="Orders error: "+safe(e.message);}
 }
