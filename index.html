@@ -56,6 +56,7 @@ label{font-weight:bold;font-size:14px}
 .option-chip{background:#e8edf3;color:#222;border:1px solid #c7d0da;border-radius:6px;padding:8px 12px;min-width:42px}
 .option-chip.selected{background:#d62828;color:#fff;border-color:#d62828}
 .quantity-options{display:flex;flex-wrap:wrap;gap:7px}
+.free-delivery{display:inline-block;background:#168447;color:#fff;padding:6px 10px;border-radius:6px;font-weight:bold;margin:5px 0}
 footer{text-align:center;background:#171717;color:#ddd;padding:22px;margin-top:35px}
 footer a{color:#f2c14e}
 @media(max-width:600px){.hero h1{font-size:27px}header{justify-content:center;text-align:center}nav{justify-content:center}.product-image{height:270px}}
@@ -68,25 +69,24 @@ footer a{color:#f2c14e}
     <a href="#shoes">Shoes</a><a href="#cart">Cart</a><a href="#payment">Payment</a><a href="#admin">Admin</a>
   </nav>
 </header>
-
 <section class="hero">
   <h1>H Khan King Shoes</h1>
   <p>Quality Shoes • Best Prices • 10% Discount on All Shoes</p>
+  <p class="free-delivery">FREE DELIVERY — No Delivery Charges</p>
   <button onclick="shareWebsite()">Share Website</button>
 </section>
-
 <main class="container">
   <section id="shoes">
     <h2 class="section-title">Our Shoes Collection</h2>
     <div id="products" class="products"><p>Loading shoes...</p></div>
   </section>
-
   <section id="cart" class="panel">
     <h2 class="section-title">Shopping Cart</h2>
     <div id="cartItems">Your cart is empty.</div>
     <div id="cartSummary">
       <p>Subtotal: <b id="cartSubtotal">Rs. 0</b></p>
       <p class="discount-line">10% Discount: <b id="cartDiscount">- Rs. 0</b></p>
+      <p>Delivery Charges: <b class="discount-line">FREE — Rs. 0</b></p>
       <h3 id="cartTotal">Total to Pay: Rs. 0</h3>
     </div>
     <h3>Checkout — Complete Your Order on Website</h3>
@@ -104,10 +104,9 @@ footer a{color:#f2c14e}
       <option value="Bank Transfer">Bank Transfer (Meezan Bank)</option>
     </select>
     <button id="placeOrderBtn" onclick="placeOrder()">Place Order</button>
-    <p class="small">Your order will be saved on this website. No WhatsApp redirection is used. You will see an order confirmation after submitting.</p>
+    <p class="small">10% discount applied. Delivery is free (Rs. 0). Your order will be saved on this website.</p>
     <div id="orderResult" class="status hidden" aria-live="polite"></div>
   </section>
-
   <section id="payment" class="panel">
     <h2 class="section-title">Contact & Payment</h2>
     <p><b>Email:</b> <a href="mailto:habibullah4897@gmail.com">habibullah4897@gmail.com</a></p>
@@ -117,7 +116,6 @@ footer a{color:#f2c14e}
     <div class="copy-row"><code id="iban">PK61MEZN0090010107506561</code><button class="danger" onclick="copyIBAN()">Copy IBAN</button></div>
     <p class="small">For bank transfer, use the account details above and enter “Bank Transfer” at checkout. Keep your payment receipt.</p>
   </section>
-
   <section id="admin" class="panel">
     <h2 class="section-title">Admin Panel</h2>
     <div id="loginBox">
@@ -135,7 +133,7 @@ footer a{color:#f2c14e}
           <div><label for="pName">Shoe Name *</label><input id="pName" required placeholder="e.g. King Sports Shoes"></div>
           <div><label for="pPrice">Price Before Discount (PKR) *</label><input id="pPrice" type="number" min="1" required placeholder="4000"></div>
           <div><label for="pSizes">Available Sizes *</label><input id="pSizes" required placeholder="39 40 41 42 43 44"></div>
-          <div><label for="pColor">Color</label><input id="pColor" placeholder="Black, Grey"></div>
+          <div><label for="pColor">Colors (separate with commas)</label><input id="pColor" placeholder="Black, White, Grey, Navy Blue"></div>
           <div><label for="pCategory">Category</label><input id="pCategory" placeholder="Sports, Casual, Formal"></div>
           <div><label for="pCode">Product Code</label><input id="pCode" placeholder="KH001"></div>
         </div>
@@ -153,17 +151,14 @@ footer a{color:#f2c14e}
     <div id="adminMessage" class="status">Admin panel ready.</div>
   </section>
 </main>
-
 <footer>
   <p>© <span id="year"></span> H Khan King Shoes. All rights reserved.</p>
   <p>Email: <a href="mailto:habibullah4897@gmail.com">habibullah4897@gmail.com</a></p>
 </footer>
-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
 const firebaseConfig = {
   apiKey: "AIzaSyDiNrPYmtN591TfXiCxQvVgKHNxMXSOx04",
   authDomain: "h-khan-king-shopping.firebaseapp.com",
@@ -175,6 +170,7 @@ const firebaseConfig = {
 };
 const ADMIN_UID = "yd8bOPayBCZmmsD28OQMrWOLrhR2";
 const DISCOUNT_RATE = 0.10;
+const DELIVERY_CHARGES = 0;
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
@@ -185,9 +181,10 @@ const money = n => "Rs. " + Math.round(Number(n || 0)).toLocaleString("en-PK");
 const discountedPrice = price => Math.round(Number(price || 0) * (1 - DISCOUNT_RATE));
 const safe = value => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const parseSizes = value => String(value || "").split(/[\s,;|]+/).map(s=>s.trim()).filter(Boolean);
-
+// Keep multi-word colours together; enter colours separated by commas, semicolons or |.
+const parseColors = value => String(value || "").split(/[,;|]+/).map(s=>s.trim()).filter(Boolean);
 window.shareWebsite = async function(){
-  const data={title:"H Khan King Shoes",text:"Visit H Khan King Shoes — 10% discount on shoes",url:location.href.split("?")[0]};
+  const data={title:"H Khan King Shoes",text:"Visit H Khan King Shoes — 10% discount and free delivery",url:location.href.split("?")[0]};
   try{if(navigator.share)await navigator.share(data);else{await navigator.clipboard.writeText(data.url);alert("Website link copied!");}}
   catch(e){if(e.name!=="AbortError")alert("Please copy the website link from your browser.");}
 };
@@ -201,18 +198,19 @@ window.shareProduct = async function(id){
   try{if(navigator.share)await navigator.share({title:p.name||"H Khan King Shoes",text:(p.name||"Shoes")+" — "+money(discountedPrice(p.price))+" after 10% discount",url:url.toString()});else{await navigator.clipboard.writeText(url.toString());alert("Product link copied!");}}
   catch(e){if(e.name!=="AbortError")alert("Share failed.");}
 };
-
 function renderProducts(){
   const box=$("products");
-  const available=productsCache.filter(p=>p.name&&p.imageUrl&&Number(p.price)>0&&p.isAvailable!==false);
+  const available=productsCache.filter(p=>p.name&&Number(p.price)>0&&p.isAvailable!==false);
   if(!available.length){box.innerHTML="<p>No shoes available yet.</p>";return;}
   box.innerHTML=available.map(p=>{
     const sizes=parseSizes(p.size);
-    const colors=parseSizes(p.color);
+    const colors=parseColors(p.color);
     const sizeChips=sizes.length?sizes.map(s=>`<button type="button" class="option-chip" id="size-${safe(p.id)}-${safe(s)}" onclick="selectProductOption('${p.id}','size','${safe(s)}')">${safe(s)}</button>`).join(""):'<span class="small">No sizes added</span>';
     const colorChips=colors.length?colors.map(c=>`<button type="button" class="option-chip" id="color-${safe(p.id)}-${safe(c)}" onclick="selectProductOption('${p.id}','color','${safe(c)}')">${safe(c)}</button>`).join(""):'<span class="small">No colours added</span>';
+    const image=p.imageUrl||p.imageURL||p.image_url||p.image||"";
+    const imageHtml=image?`<img src="${safe(image)}" alt="${safe(p.name)}" loading="lazy" onerror="this.alt='Product image unavailable';this.style.visibility='hidden'">`:'<span class="muted">Product image not added</span>';
     return `<article class="card">
-      <div class="product-image"><img src="${safe(p.imageUrl)}" alt="${safe(p.name)}" loading="lazy" onerror="this.alt='Product image unavailable';this.style.visibility='hidden'"></div>
+      <div class="product-image">${imageHtml}</div>
       <div class="card-body">
         <h3>${safe(p.name)}</h3>
         <span class="discount-badge">10% OFF</span>
@@ -222,6 +220,7 @@ function renderProducts(){
         <div class="option-group"><span class="option-title">Quantity *</span><div class="quantity-options">${[1,2,3,4,5,6,7,8,9,10].map(q=>`<button type="button" class="option-chip ${q===1?"selected":""}" id="qty-${safe(p.id)}-${q}" onclick="selectProductQuantity('${p.id}',${q})">${q}</button>`).join("")}</div></div>
         <p class="muted">${safe(p.description||"")}</p>
         <p class="muted"><b>Product Code:</b> ${safe(p.productCode||"-")}</p>
+        <p class="discount-line">Free Delivery</p>
         <div class="actions"><button onclick="addToCart('${p.id}')">Add to Cart</button><button class="share-btn" onclick="shareProduct('${p.id}')">Share Product</button></div>
       </div></article>`;
   }).join("");
@@ -254,7 +253,7 @@ window.selectProductOption=function(id,type,value){
 window.addToCart=function(id){
   const p=productsCache.find(x=>x.id===id);if(!p)return alert("Product not found.");
   const chosen=selectedProductOptions[id]||{};
-  const sizes=parseSizes(p.size),colors=parseSizes(p.color);
+  const sizes=parseSizes(p.size),colors=parseColors(p.color);
   const size=chosen.size,color=chosen.color;
   if(sizes.length&&!size)return alert("Please click and select a shoe size.");
   if(colors.length&&!color)return alert("Please click and select a colour.");
@@ -270,12 +269,11 @@ function renderCart(){
   box.innerHTML=cart.map((item,i)=>`<div class="cart-row"><div><b>${safe(item.name)}</b><br><span class="small">Size: ${safe(item.size)} · Colour: ${safe(item.color||"Not specified")} · ${money(discountedPrice(item.price))} after discount each</span></div><div class="qty"><button class="secondary" onclick="changeQty(${i},-1)">−</button><b>${item.qty}</b><button class="secondary" onclick="changeQty(${i},1)">+</button><button class="danger" onclick="removeCartItem(${i})">Remove</button></div></div>`).join("");
   const subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0);
   const discount=subtotal*DISCOUNT_RATE;
-  const total=cart.reduce((s,x)=>s+discountedPrice(x.price)*x.qty,0);
+  const total=cart.reduce((s,x)=>s+discountedPrice(x.price)*x.qty,0)+DELIVERY_CHARGES;
   $("cartSubtotal").textContent=money(subtotal);$("cartDiscount").textContent="- "+money(discount);$("cartTotal").textContent="Total to Pay: "+money(total);
 }
 window.changeQty=(i,n)=>{if(!cart[i])return;cart[i].qty+=n;if(cart[i].qty<1)cart.splice(i,1);renderCart();};
 window.removeCartItem=i=>{cart.splice(i,1);renderCart();};
-
 window.placeOrder=async function(){
   if(!cart.length)return alert("Please add shoes to your cart first.");
   const customerName=$("customerName").value.trim(),customerPhone=$("customerPhone").value.trim(),customerEmail=$("customerEmail").value.trim(),customerAddress=$("customerAddress").value.trim(),paymentMethod=$("paymentMethod").value;
@@ -283,21 +281,20 @@ window.placeOrder=async function(){
   if(customerEmail&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail))return alert("Please enter a valid email address.");
   const subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0);
   const discount=Math.round(subtotal*DISCOUNT_RATE);
-  const total=cart.reduce((s,x)=>s+discountedPrice(x.price)*x.qty,0);
+  const total=cart.reduce((s,x)=>s+discountedPrice(x.price)*x.qty,0)+DELIVERY_CHARGES;
   const items=cart.map(x=>({productId:x.id,name:x.name,price:x.price,discountedUnitPrice:discountedPrice(x.price),size:x.size,color:x.color||"Not specified",quantity:x.qty,lineTotal:discountedPrice(x.price)*x.qty}));
   const btn=$("placeOrderBtn");btn.disabled=true;btn.textContent="Placing order...";
   try{
-    const orderRef=await addDoc(collection(db,"orders"),{customerName,customerPhone,customerEmail,customerAddress,paymentMethod,items,subtotal,discount,total,status:"Pending",createdAt:serverTimestamp()});
+    const orderRef=await addDoc(collection(db,"orders"),{customerName,customerPhone,customerEmail,customerAddress,paymentMethod,items,subtotal,discount,deliveryCharges:DELIVERY_CHARGES,total,status:"Pending",createdAt:serverTimestamp()});
     const orderNumber=orderRef.id;
     $("orderResult").classList.remove("hidden");
-    $("orderResult").innerHTML=`<b>Order submitted successfully!</b><br>Order number: <b>${safe(orderNumber)}</b><br>Total payable: <b>${money(total)}</b><br>Payment: ${safe(paymentMethod)}<br>We have saved your order on the website. Please keep your order number.`;
+    $("orderResult").innerHTML=`<b>Order submitted successfully!</b><br>Order number: <b>${safe(orderNumber)}</b><br>Subtotal: ${money(subtotal)}<br>10% Discount: -${money(discount)}<br>Delivery: FREE<br>Total payable: <b>${money(total)}</b><br>Payment: ${safe(paymentMethod)}<br>We have saved your order on the website. Please keep your order number.`;
     cart=[];renderCart();
     $("customerName").value="";$("customerPhone").value="";$("customerEmail").value="";$("customerAddress").value="";
     $("orderResult").scrollIntoView({behavior:"smooth",block:"center"});
   }catch(e){alert("Order could not be saved: "+e.message);}
   finally{btn.disabled=false;btn.textContent="Place Order";}
 };
-
 window.adminLogin=async function(){
   const email=$("adminEmail").value.trim(),password=$("adminPassword").value;
   if(!email||!password)return alert("Enter admin email and password.");
@@ -349,7 +346,7 @@ async function loadAdminData(){
     if(!orders.length){box.textContent="No customer orders yet.";return;}
     box.innerHTML=orders.map(o=>{
       const itemText=(o.items||[]).map(i=>`${safe(i.name)} — Size ${safe(i.size)} — Colour ${safe(i.color||"Not specified")} — Qty ${safe(i.quantity)} — ${money(i.lineTotal)}`).join("<br>");
-      return `<div class="panel"><b>Order: ${safe(o.id)}</b><p><b>Customer:</b> ${safe(o.customerName)} | ${safe(o.customerPhone)}<br><b>Email:</b> ${safe(o.customerEmail||"Not provided")}<br><b>Address:</b> ${safe(o.customerAddress)}<br><b>Payment:</b> ${safe(o.paymentMethod||"-")}</p><p>${itemText}</p><p>Subtotal: ${money(o.subtotal)}<br>Discount: -${money(o.discount)}</p><b>Total: ${money(o.total)}</b><p><label>Status</label><select id="status-${safe(o.id)}">${["Pending","Confirmed","Shipped","Delivered","Cancelled"].map(s=>`<option ${o.status===s?"selected":""}>${s}</option>`).join("")}</select><button onclick="updateOrderStatus('${o.id}')">Update Status</button></p></div>`;
+      return `<div class="panel"><b>Order: ${safe(o.id)}</b><p><b>Customer:</b> ${safe(o.customerName)} | ${safe(o.customerPhone)}<br><b>Email:</b> ${safe(o.customerEmail||"Not provided")}<br><b>Address:</b> ${safe(o.customerAddress)}<br><b>Payment:</b> ${safe(o.paymentMethod||"-")}</p><p>${itemText}</p><p>Subtotal: ${money(o.subtotal)}<br>Discount: -${money(o.discount)}<br>Delivery: FREE</p><b>Total: ${money(o.total)}</b><p><label>Status</label><select id="status-${safe(o.id)}">${["Pending","Confirmed","Shipped","Delivered","Cancelled"].map(s=>`<option ${o.status===s?"selected":""}>${s}</option>`).join("")}</select><button onclick="updateOrderStatus('${o.id}')">Update Status</button></p></div>`;
     }).join("");
   }catch(e){$("adminOrders").innerHTML="Orders error: "+safe(e.message);}
 }
