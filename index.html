@@ -72,7 +72,7 @@ footer a{color:#f2c14e}
 <section class="hero">
   <h1>H Khan King Shoes</h1>
   <p>Quality Shoes • Best Prices • 10% Discount on All Shoes</p>
-  <p class="free-delivery">FREE DELIVERY — No Delivery Charges</p>
+  <p class="free-delivery">FREE DELIVERY ALL OVER PAKISTAN — No Delivery Charges</p>
   <button onclick="shareWebsite()">Share Website</button>
 </section>
 <main class="container">
@@ -133,13 +133,16 @@ footer a{color:#f2c14e}
           <div><label for="pName">Shoe Name *</label><input id="pName" required placeholder="e.g. King Sports Shoes"></div>
           <div><label for="pPrice">Price Before Discount (PKR) *</label><input id="pPrice" type="number" min="1" required placeholder="4000"></div>
           <div><label for="pSizes">Available Sizes *</label><input id="pSizes" required placeholder="39 40 41 42 43 44"></div>
-          <div><label for="pColor">Colors (separate with commas)</label><input id="pColor" placeholder="Black, White, Grey, Navy Blue"></div>
+          <div><label>Colour 1</label><input id="pColor1" placeholder="Black"></div>
+          <div><label>Colour 2</label><input id="pColor2" placeholder="Grey"></div>
+          <div><label>Colour 3</label><input id="pColor3" placeholder="Brown"></div>
+          <div><label>Colour 4</label><input id="pColor4" placeholder="Gold"></div>
           <div><label for="pCategory">Category</label><input id="pCategory" placeholder="Sports, Casual, Formal"></div>
           <div><label for="pCode">Product Code</label><input id="pCode" placeholder="KH001"></div>
         </div>
         <label for="pDescription">Description</label><textarea id="pDescription" placeholder="Write shoe details"></textarea>
         <label for="pImageUrl">Image URL *</label><input id="pImageUrl" type="url" required placeholder="Paste your direct image URL here (https://...)">
-        <p class="small">Paste a direct image URL from an image hosting website. Firebase Storage is not used.</p>
+        <p class="small">Paste a direct image URL from an image hosting website. Firebase Storage is not used. Free delivery is available all over Pakistan.</p>
         <div id="imagePreviewBox" class="hidden"><img id="imagePreview" alt="Image preview" style="max-width:220px;max-height:180px;object-fit:contain"></div>
         <p><label><input id="pAvailable" type="checkbox" checked style="width:auto;margin-right:7px">Available for sale</label></p>
         <button type="submit" id="saveProductBtn">Save Product</button>
@@ -183,6 +186,8 @@ const safe = value => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;"
 const parseSizes = value => String(value || "").split(/[\s,;|]+/).map(s=>s.trim()).filter(Boolean);
 // Keep multi-word colours together; enter colours separated by commas, semicolons or |.
 const parseColors = value => String(value || "").split(/[,;|]+/).map(s=>s.trim()).filter(Boolean);
+const DEFAULT_COLORS = ["Black", "Grey", "Brown", "Gold"];
+const productColors = p => { if (!Array.isArray(p.colorOptions)) return DEFAULT_COLORS; const saved = p.colorOptions.filter(Boolean); return saved.length ? saved : DEFAULT_COLORS; };
 window.shareWebsite = async function(){
   const data={title:"H Khan King Shoes",text:"Visit H Khan King Shoes — 10% discount and free delivery",url:location.href.split("?")[0]};
   try{if(navigator.share)await navigator.share(data);else{await navigator.clipboard.writeText(data.url);alert("Website link copied!");}}
@@ -204,7 +209,7 @@ function renderProducts(){
   if(!available.length){box.innerHTML="<p>No shoes available yet.</p>";return;}
   box.innerHTML=available.map(p=>{
     const sizes=parseSizes(p.size);
-    const colors=parseColors(p.color);
+    const colors=productColors(p);
     const sizeChips=sizes.length?sizes.map(s=>`<button type="button" class="option-chip" id="size-${safe(p.id)}-${safe(s)}" onclick="selectProductOption('${p.id}','size','${safe(s)}')">${safe(s)}</button>`).join(""):'<span class="small">No sizes added</span>';
     const colorChips=colors.length?colors.map(c=>`<button type="button" class="option-chip" id="color-${safe(p.id)}-${safe(c)}" onclick="selectProductOption('${p.id}','color','${safe(c)}')">${safe(c)}</button>`).join(""):'<span class="small">No colours added</span>';
     const image=p.imageUrl||p.imageURL||p.image_url||p.image||"";
@@ -220,7 +225,7 @@ function renderProducts(){
         <div class="option-group"><span class="option-title">Quantity *</span><div class="quantity-options">${[1,2,3,4,5,6,7,8,9,10].map(q=>`<button type="button" class="option-chip ${q===1?"selected":""}" id="qty-${safe(p.id)}-${q}" onclick="selectProductQuantity('${p.id}',${q})">${q}</button>`).join("")}</div></div>
         <p class="muted">${safe(p.description||"")}</p>
         <p class="muted"><b>Product Code:</b> ${safe(p.productCode||"-")}</p>
-        <p class="discount-line">Free Delivery</p>
+        <p class="discount-line">Free Delivery All Over Pakistan</p>
         <div class="actions"><button onclick="addToCart('${p.id}')">Add to Cart</button><button class="share-btn" onclick="shareProduct('${p.id}')">Share Product</button></div>
       </div></article>`;
   }).join("");
@@ -253,7 +258,7 @@ window.selectProductOption=function(id,type,value){
 window.addToCart=function(id){
   const p=productsCache.find(x=>x.id===id);if(!p)return alert("Product not found.");
   const chosen=selectedProductOptions[id]||{};
-  const sizes=parseSizes(p.size),colors=parseColors(p.color);
+  const sizes=parseSizes(p.size),colors=productColors(p);
   const size=chosen.size,color=chosen.color;
   if(sizes.length&&!size)return alert("Please click and select a shoe size.");
   if(colors.length&&!color)return alert("Please click and select a colour.");
@@ -318,7 +323,8 @@ $("pImageUrl").addEventListener("input",()=>{
 $("productForm").addEventListener("submit",async e=>{
   e.preventDefault();const user=auth.currentUser;if(!user||user.uid!==ADMIN_UID)return alert("Admin login required.");
   const id=$("editId").value;
-  const data={name:$("pName").value.trim(),price:Number($("pPrice").value),size:$("pSizes").value.trim(),color:$("pColor").value.trim(),category:$("pCategory").value.trim(),productCode:$("pCode").value.trim(),description:$("pDescription").value.trim(),imageUrl:$("pImageUrl").value.trim(),isAvailable:$("pAvailable").checked,updatedAt:serverTimestamp()};
+  const colorOptions=[1,2,3,4].map(n=>$("pColor"+n).value.trim()).filter(Boolean);
+  const data={name:$("pName").value.trim(),price:Number($("pPrice").value),size:$("pSizes").value.trim(),color:colorOptions.join(", "),colorOptions,category:$("pCategory").value.trim(),productCode:$("pCode").value.trim(),description:$("pDescription").value.trim(),imageUrl:$("pImageUrl").value.trim(),isAvailable:$("pAvailable").checked,updatedAt:serverTimestamp()};
   if(!data.name||!data.imageUrl||!parseSizes(data.size).length||!Number.isFinite(data.price)||data.price<=0)return alert("Enter shoe name, valid price, available sizes and image URL.");
   const btn=$("saveProductBtn");btn.disabled=true;btn.textContent="Saving...";
   try{if(id)await updateDoc(doc(db,"products",id),data);else{data.createdAt=serverTimestamp();await addDoc(collection(db,"products"),data);}alert(id?"Product updated successfully.":"Product added successfully.");resetProductForm();await loadProducts();}
@@ -333,7 +339,7 @@ function renderAdminProducts(){
 }
 window.editProduct=function(id){
   const p=productsCache.find(x=>x.id===id);if(!p)return;
-  $("editId").value=id;$("pName").value=p.name||"";$("pPrice").value=p.price??"";$("pSizes").value=p.size||"";$("pColor").value=p.color||"";$("pCategory").value=p.category||"";$("pCode").value=p.productCode||"";$("pDescription").value=p.description||"";$("pImageUrl").value=p.imageUrl||"";$("pAvailable").checked=p.isAvailable!==false;
+  $("editId").value=id;$("pName").value=p.name||"";$("pPrice").value=p.price??"";$("pSizes").value=p.size||"";const oldColors=Array.isArray(p.colorOptions)?p.colorOptions:DEFAULT_COLORS;[1,2,3,4].forEach((n)=>$("pColor"+n).value=oldColors[n-1]||"");$("pCategory").value=p.category||"";$("pCode").value=p.productCode||"";$("pDescription").value=p.description||"";$("pImageUrl").value=p.imageUrl||"";$("pAvailable").checked=p.isAvailable!==false;
   if(p.imageUrl){$("imagePreview").src=p.imageUrl;$("imagePreviewBox").classList.remove("hidden");}
   $("formHeading").textContent="Edit Shoes";$("productForm").scrollIntoView({behavior:"smooth"});
 };
