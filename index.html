@@ -1,753 +1,432 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>H Khan King Shoes</title>
-<meta name="description" content="H Khan King Shoes - Online Shoes Shopping Pakistan">
-
+<meta name="description" content="H Khan King Shoes - Quality Shoes in Pakistan">
 <style>
 *{box-sizing:border-box}
-body{
- margin:0;font-family:Arial,sans-serif;color:#222;
- background:linear-gradient(135deg,#d9eaff,#fce1f1,#fff1cc,#d7f8e9);
-}
-header,footer{
- background:linear-gradient(120deg,#101b50,#5b21b6,#d4145a);
- color:white;text-align:center;padding:24px 12px
-}
-header h1{margin:0}
-nav{
- background:white;padding:13px;text-align:center;
- position:sticky;top:0;z-index:10;box-shadow:0 2px 8px #0002
-}
-nav a{color:#10234b;text-decoration:none;font-weight:bold;margin:0 8px}
-.hero{
- background:linear-gradient(120deg,#0072ff,#8e2de2,#ff416c);
- color:white;text-align:center;padding:35px 12px
-}
-.container{max-width:1100px;margin:auto;padding:16px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
-.card{
- background:#ffffffed;padding:16px;border-radius:13px;
- box-shadow:0 4px 15px #0002;margin-bottom:14px
-}
-.product{text-align:center}
-.product img{
- width:100%;height:230px;object-fit:contain;
- background:#f3f3f3;border-radius:10px
-}
-.price{font-size:22px;font-weight:bold;color:#10234b}
-button{
- border:0;border-radius:8px;padding:12px 15px;
- background:#10234b;color:white;font-weight:bold;
- cursor:pointer;margin:4px
-}
-button:disabled{opacity:.5}
-.green{background:#16834a}
-.red{background:#d00000}
-.purple{background:#7025bd}
-input,textarea,select{
- width:100%;padding:12px;margin:7px 0 13px;
- border:1px solid #ccc;border-radius:8px;font-size:15px
-}
-label{font-weight:bold}
-.small{font-size:13px;color:#666;line-height:1.6}
+:root{--dark:#171717;--gold:#d6a62e;--light:#f5f5f5;--red:#d62828}
+body{margin:0;font-family:Arial,sans-serif;background:#f4f5f7;color:#222}
+header{background:#171717;color:#fff;padding:16px 4%;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{font-size:23px;font-weight:800;color:#f2c14e}
+nav{display:flex;gap:15px;flex-wrap:wrap}
+nav a{color:#fff;text-decoration:none;font-weight:bold}
+.hero{background:linear-gradient(120deg,#191919,#484848);color:#fff;text-align:center;padding:45px 15px}
+.hero h1{font-size:34px;margin:0 0 10px}
+.hero p{margin:8px 0 18px}
+button,.btn{border:0;border-radius:7px;padding:11px 15px;font-weight:bold;cursor:pointer;background:var(--gold);color:#171717}
+button:hover,.btn:hover{opacity:.88}
+button:disabled{opacity:.5;cursor:not-allowed}
+.container{width:min(1150px,94%);margin:25px auto}
+.section-title{font-size:25px;margin:25px 0 15px}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px #00000012}
+.card img{width:100%;height:220px;object-fit:cover;background:#eee}
+.card-body{padding:14px}
+.card h3{margin:4px 0 8px}
+.price{font-size:20px;font-weight:bold;color:#b17b00}
+.muted{color:#666;font-size:14px;line-height:1.5}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.actions button{flex:1;min-width:100px}
+.share-btn{background:#e8e8e8}
+.whatsapp-btn{background:#20b85a;color:#fff}
+.panel{background:#fff;border-radius:12px;padding:18px;margin:20px 0;box-shadow:0 2px 12px #00000010}
+input,textarea,select{width:100%;padding:11px;border:1px solid #ccc;border-radius:7px;margin:6px 0 12px;font:inherit}
+textarea{min-height:75px;resize:vertical}
+label{font-weight:bold;font-size:14px}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+.cart-row,.order-row{border-bottom:1px solid #eee;padding:12px 0;display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap}
+.qty{display:flex;align-items:center;gap:8px}
+.qty button{padding:5px 10px}
+.small{font-size:12px;color:#777}
+.copy-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.copy-row code{overflow-wrap:anywhere;background:#f2f2f2;padding:10px;border-radius:6px;flex:1}
+.danger{background:#d62828;color:#fff}
+.secondary{background:#e5e5e5}
 .hidden{display:none!important}
-.iban-box{background:#eee;padding:13px;border-radius:8px;text-align:center;word-break:break-all}
-.order-row{border-bottom:1px solid #ddd;padding:12px 0}
-#preview{width:100%;max-height:220px;object-fit:contain;display:none}
-.badge{background:#eee;padding:5px 9px;border-radius:6px}
-footer{margin-top:30px}
+.status{padding:10px;border-radius:7px;background:#f4f4f4;margin:10px 0}
+footer{text-align:center;background:#171717;color:#ddd;padding:22px;margin-top:35px}
+footer a{color:#f2c14e}
+@media(max-width:600px){.hero h1{font-size:27px}header{justify-content:center;text-align:center}nav{justify-content:center}}
 </style>
 </head>
-
 <body>
-
 <header>
-<h1>H Khan King Shoes</h1>
-<p>Quality Shoes | Best Prices | Pakistan</p>
+  <div class="brand">H KHAN KING SHOES</div>
+  <nav>
+    <a href="#shoes">Shoes</a>
+    <a href="#cart">Cart</a>
+    <a href="#payment">Payment</a>
+    <a href="#admin">Admin</a>
+  </nav>
 </header>
 
-<nav>
-<a href="#home">Home</a>
-<a href="#shoes">Shoes</a>
-<a href="#cart">Cart 🛒</a>
-<a href="#contact">Contact</a>
-<a href="#admin">Admin</a>
-</nav>
-
-<section class="hero" id="home">
-<h2>Welcome to H Khan King Shoes</h2>
-<p>اپنی پسند کے جوتے خریدیں اور گھر بیٹھے آرڈر کریں۔</p>
-<button class="green" onclick="shareWebsite()">Share Website</button>
+<section class="hero">
+  <h1>H Khan King Shoes</h1>
+  <p>Quality Shoes • Best Prices • Order on WhatsApp</p>
+  <button onclick="shareWebsite()">Share Website</button>
 </section>
 
 <main class="container">
+  <section id="shoes">
+    <h2 class="section-title">Our Shoes Collection</h2>
+    <div id="products" class="products"><p>Loading shoes...</p></div>
+  </section>
 
-<section id="shoes">
-<h2 style="text-align:center">👟 Our Shoes Collection</h2>
-<div id="products" class="grid">
-<p>Loading Shoes...</p>
-</div>
-</section>
+  <section id="cart" class="panel">
+    <h2 class="section-title">Shopping Cart</h2>
+    <div id="cartItems">Your cart is empty.</div>
+    <h3 id="cartTotal">Total: Rs. 0</h3>
+    <h3>Customer Details</h3>
+    <label for="customerName">Your Name</label>
+    <input id="customerName" placeholder="Enter your name">
+    <label for="customerPhone">Mobile Number</label>
+    <input id="customerPhone" type="tel" placeholder="03XXXXXXXXX">
+    <label for="customerAddress">Delivery Address</label>
+    <textarea id="customerAddress" placeholder="House, street, city and complete address"></textarea>
+    <button id="placeOrderBtn" onclick="placeOrder()">Confirm Order</button>
+    <p class="small">Your order will also be sent to WhatsApp for confirmation.</p>
+  </section>
 
-<section class="card" id="cart">
-<h2>🛒 Shopping Cart</h2>
-<div id="cartItems">Your cart is empty.</div>
-<h3 id="cartTotal">Total: Rs. 0</h3>
+  <section id="payment" class="panel">
+    <h2 class="section-title">Contact & Payment</h2>
+    <p><b>WhatsApp:</b> <a href="https://wa.me/923352253097" target="_blank" rel="noopener">03352253097 — Chat on WhatsApp</a></p>
+    <p><b>Bank:</b> Meezan Bank</p>
+    <p><b>Account Title:</b> Habib Ullah</p>
+    <div class="copy-row">
+      <code id="iban">PK61MEZN0090010107506561</code>
+      <button class="danger" onclick="copyIBAN()">Copy IBAN</button>
+    </div>
+    <p class="small">Please contact us on WhatsApp after making payment and share your payment receipt.</p>
+  </section>
 
-<h3>Customer Details</h3>
-<label>Your Name</label>
-<input id="customerName" placeholder="Enter your name">
+  <section id="admin" class="panel">
+    <h2 class="section-title">Admin Panel</h2>
+    <div id="loginBox">
+      <p class="muted">Admin login is required to add shoes and manage orders.</p>
+      <label for="adminEmail">Admin Email</label>
+      <input id="adminEmail" type="email" placeholder="Admin email">
+      <label for="adminPassword">Password</label>
+      <input id="adminPassword" type="password" placeholder="Admin password">
+      <button onclick="adminLogin()">Login</button>
+    </div>
 
-<label>WhatsApp Number</label>
-<input id="customerPhone" type="tel" placeholder="03XXXXXXXXX">
+    <div id="adminArea" class="hidden">
+      <div class="copy-row">
+        <b>Admin is logged in</b>
+        <button class="secondary" onclick="adminLogout()">Logout</button>
+      </div>
+      <h3 id="formHeading">Add New Shoes</h3>
+      <form id="productForm">
+        <input type="hidden" id="editId">
+        <div class="form-grid">
+          <div><label for="pName">Shoe Name *</label><input id="pName" required placeholder="e.g. King Sports Shoes"></div>
+          <div><label for="pPrice">Price (PKR) *</label><input id="pPrice" type="number" min="1" required placeholder="4000"></div>
+          <div><label for="pSizes">Available Sizes</label><input id="pSizes" placeholder="39 40 41 42 43"></div>
+          <div><label for="pColor">Color</label><input id="pColor" placeholder="Black, Grey"></div>
+          <div><label for="pCategory">Category</label><input id="pCategory" placeholder="Sports, Casual, Formal"></div>
+          <div><label for="pCode">Product Code</label><input id="pCode" placeholder="KH001"></div>
+        </div>
+        <label for="pDescription">Description</label>
+        <textarea id="pDescription" placeholder="Write shoe details"></textarea>
+        <label for="pImageUrl">Image URL *</label>
+        <input id="pImageUrl" type="url" required placeholder="Paste your image link here (https://...)">
+        <p class="small">Upload your picture to another image hosting website, copy its direct image URL, and paste it above. Firebase Storage is not used.</p>
+        <div id="imagePreviewBox" class="hidden">
+          <img id="imagePreview" alt="Image preview" style="max-width:180px;max-height:150px;border-radius:8px;object-fit:cover">
+        </div>
+        <p><label><input id="pAvailable" type="checkbox" checked style="width:auto;margin-right:7px">Available for sale</label></p>
+        <button type="submit" id="saveProductBtn">Save Product</button>
+        <button type="button" class="secondary" onclick="resetProductForm()">Clear Form</button>
+      </form>
 
-<label>Delivery Address</label>
-<textarea id="customerAddress" rows="3" placeholder="Complete address"></textarea>
-
-<button class="green" onclick="placeOrder()">Confirm Order</button>
-<p id="orderMessage" class="small"></p>
-</section>
-
-<section class="card" id="contact">
-<h2>Contact & Payment</h2>
-<p><b>H Khan King Shoes</b></p>
-<p>WhatsApp: 03352253097</p>
-<a href="https://api.whatsapp.com/send?phone=923352253097" target="_blank">
-<button class="green">WhatsApp Contact</button>
-</a>
-
-<hr>
-<h3>Meezan Bank Account</h3>
-<p><b>Account Title:</b> Habib Ullah</p>
-<p><b>Bank:</b> Meezan Bank</p>
-<p><b>IBAN:</b></p>
-<div class="iban-box">
-<b id="iban">PK61MEZN0090010107506561</b>
-<button class="red" onclick="copyIBAN()">📋 Copy IBAN</button>
-</div>
-<p id="copyMessage" class="small"></p>
-<p class="small">Bank transfer کی ادائیگی کی تصدیق WhatsApp پر کریں۔</p>
-</section>
-
-<section class="card" id="admin">
-<h2>🔐 Admin Panel</h2>
-
-<div id="loginBox">
-<label>Admin Email</label>
-<input type="email" id="adminEmail" placeholder="Firebase Admin Email">
-<label>Password</label>
-<input type="password" id="adminPassword" placeholder="Password">
-<button onclick="loginAdmin()">Login</button>
-<p id="loginMessage" class="small"></p>
-</div>
-
-<div id="adminPanel" class="hidden">
-
-<button class="red" onclick="logoutAdmin()">Logout</button>
-
-<hr>
-<h3 id="formHeading">Add New Shoes</h3>
-
-<label>Shoe Name</label>
-<input id="shoeName" placeholder="King Sports Shoes">
-
-<label>Price (PKR)</label>
-<input id="shoePrice" type="number" min="1" placeholder="2500">
-
-<label>Available Sizes</label>
-<input id="shoeSize" placeholder="39, 40, 41, 42, 43">
-
-<label>Color</label>
-<input id="shoeColor" placeholder="Black">
-
-<label>Description</label>
-<textarea id="shoeDescription" placeholder="Shoe details"></textarea>
-
-<label>Product Picture - Mobile Gallery</label>
-<input id="shoeFile" type="file" accept="image/*" onchange="previewImage()">
-
-<img id="preview" alt="Shoe preview">
-
-<p class="small">آپ موبائل Gallery سے تصویر منتخب کرسکتے ہیں۔</p>
-
-<button id="saveButton" class="green" onclick="saveShoe()">Add Shoes</button>
-<button class="red" onclick="cancelEdit()">Cancel</button>
-
-<p id="adminMessage" class="small"></p>
-
-<hr>
-<h3>Manage Shoes</h3>
-<div id="adminProducts"></div>
-
-<hr>
-<h2>📦 Customer Orders</h2>
-<div id="adminOrders">Loading Orders...</div>
-
-</div>
-</section>
-
+      <h3>Manage Shoes</h3>
+      <div id="adminProducts">Loading products...</div>
+      <h3>Customer Orders</h3>
+      <div id="adminOrders">Loading orders...</div>
+    </div>
+    <div id="adminMessage" class="status">Admin panel ready.</div>
+  </section>
 </main>
 
 <footer>
-<h3>H Khan King Shoes</h3>
-<p>Quality Shoes | Best Prices | Pakistan</p>
-<button class="green" onclick="shareWebsite()">Share Website</button>
-<p>© 2026 H Khan King Shoes. All Rights Reserved.</p>
+  <p>© <span id="year"></span> H Khan King Shoes. All rights reserved.</p>
+  <p>For orders and information: <a href="https://wa.me/923352253097" target="_blank" rel="noopener">WhatsApp 03352253097</a></p>
 </footer>
 
 <script type="module">
-
-import {initializeApp}
-from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
-
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
- getAuth,signInWithEmailAndPassword,
- onAuthStateChanged,signOut
-} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
-
+  getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc,
+  serverTimestamp, query, orderBy
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import {
- getFirestore,collection,addDoc,getDocs,
- updateDoc,deleteDoc,doc,serverTimestamp,
- query,orderBy
-} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+  getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-import {
- getStorage,ref,uploadBytes,getDownloadURL,deleteObject
-} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-storage.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyDiNrPYmtN591TfXiCxQvVgKHNxMXSOx04",
+  authDomain: "h-khan-king-shopping.firebaseapp.com",
+  projectId: "h-khan-king-shopping",
+  storageBucket: "h-khan-king-shopping.firebasestorage.app",
+  messagingSenderId: "1051251847698",
+  appId: "1:1051251847698:web:bd8c0191c5b701bf145ecb",
+  measurementId: "G-MHLR0PLSRM"
+};
+const ADMIN_UID = "yd8bOPayBCZmmsD28OQMrWOLrhR2";
+const WHATSAPP = "923352253097";
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
 
-const firebaseConfig={
- apiKey:"AIzaSyDiNrPYmtN591TfXiCxQvVgKHNxMXSOx04",
- authDomain:"h-khan-king-shopping.firebaseapp.com",
- projectId:"h-khan-king-shopping",
- storageBucket:"h-khan-king-shopping.firebasestorage.app",
- messagingSenderId:"1051251847698",
- appId:"1:1051251847698:web:bd8c0191c5b701bf145ecb",
- measurementId:"G-MHLR0PLSRM"
+let productsCache = [];
+let cart = [];
+
+const $ = id => document.getElementById(id);
+const money = n => "Rs. " + Number(n || 0).toLocaleString("en-PK");
+const safe = value => String(value ?? "").replace(/[&<>"']/g, c => ({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+}[c]));
+
+window.shareWebsite = async function(){
+  const data = {title:"H Khan King Shoes", text:"Visit H Khan King Shoes online", url:location.href.split("?")[0]};
+  try {
+    if(navigator.share) await navigator.share(data);
+    else { await navigator.clipboard.writeText(data.url); alert("Website link copied!"); }
+  } catch(e) { if(e.name !== "AbortError") alert("Could not share. Please copy the website link from your browser."); }
 };
 
-const ADMIN_UID="yd8bOPayBCZmmsD28OQMrWOLrhR2";
-const WHATSAPP="923352253097";
+window.copyIBAN = async function(){
+  try { await navigator.clipboard.writeText("PK61MEZN0090010107506561"); alert("IBAN Copied Successfully!"); }
+  catch(e) { alert("IBAN: PK61MEZN0090010107506561"); }
+};
 
-const app=initializeApp(firebaseConfig);
-const auth=getAuth(app);
-const db=getFirestore(app);
-const storage=getStorage(app);
+window.shareProduct = async function(id){
+  const p = productsCache.find(x => x.id === id);
+  if(!p) return alert("Product not found.");
+  const url = new URL(location.href);
+  url.search = "?product=" + encodeURIComponent(id);
+  url.hash = "shoes";
+  const data = {title:p.name || "H Khan King Shoes", text:(p.name || "Shoes") + " - " + money(p.price), url:url.toString()};
+  try {
+    if(navigator.share) await navigator.share(data);
+    else { await navigator.clipboard.writeText(url.toString()); alert("Product link copied!"); }
+  } catch(e) { if(e.name !== "AbortError") alert("Share failed. Product link: " + url.toString()); }
+};
 
-let editingId=null;
-let editingImage="";
-let cart=[];
+window.addToCart = function(id){
+  const p = productsCache.find(x => x.id === id);
+  if(!p) return alert("Product not found.");
+  const size = prompt("Enter shoe size (" + (p.size || "available sizes") + "):");
+  if(size === null) return;
+  if(p.size && !p.size.toLowerCase().split(/[\s,]+/).includes(size.trim().toLowerCase())){
+    return alert("Please enter one of the available sizes: " + p.size);
+  }
+  const existing = cart.find(x => x.id === id && x.size.toLowerCase() === size.trim().toLowerCase());
+  if(existing) existing.qty++;
+  else cart.push({id:p.id,name:p.name,price:Number(p.price),size:size.trim(),qty:1});
+  renderCart();
+  $("cart").scrollIntoView({behavior:"smooth"});
+};
 
-const $=id=>document.getElementById(id);
-
-function safe(value){
- return String(value??"").replace(/[&<>"']/g,c=>({
- "&":"&amp;","<":"&lt;",">":"&gt;",
- '"':"&quot;","'":"&#039;"
- })[c]);
+function renderProducts(){
+  const box = $("products");
+  const available = productsCache.filter(p => p.name && p.imageUrl && Number(p.price) > 0 && p.isAvailable !== false);
+  if(!available.length){box.innerHTML="<p>No shoes available yet.</p>";return;}
+  box.innerHTML = available.map(p => `
+    <article class="card">
+      <img src="${safe(p.imageUrl)}" alt="${safe(p.name)}" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22100%25%22 height=%22100%25%22 fill=%22%23eeeeee%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 fill=%22%23777%22 font-size=%2220%22%3EImage unavailable%3C/text%3E%3C/svg%3E'">
+      <div class="card-body">
+        <h3>${safe(p.name)}</h3>
+        <div class="price">${money(p.price)}</div>
+        <p class="muted">${safe(p.description || "")}</p>
+        <p class="muted"><b>Sizes:</b> ${safe(p.size || "Contact us")}<br><b>Color:</b> ${safe(p.color || "As shown")}<br><b>Code:</b> ${safe(p.productCode || "-")}</p>
+        <div class="actions">
+          <button onclick="addToCart('${p.id}')">Add to Cart</button>
+          <button class="share-btn" onclick="shareProduct('${p.id}')">Share Product</button>
+        </div>
+      </div>
+    </article>`).join("");
 }
 
-function money(value){
- return Number(value||0).toLocaleString("en-PK");
-}
-
-window.shareWebsite=()=>{
- const text="H Khan King Shoes\n"+location.href;
- window.open("https://api.whatsapp.com/send?text="+encodeURIComponent(text),"_blank");
-};
-
-window.copyIBAN=async()=>{
- try{
- await navigator.clipboard.writeText($("iban").textContent);
- $("copyMessage").textContent="IBAN Copied Successfully!";
- }catch(e){
- $("copyMessage").textContent="IBAN: "+$("iban").textContent;
- }
-};
-
-window.loginAdmin=async()=>{
- try{
- const result=await signInWithEmailAndPassword(
- auth,$("adminEmail").value.trim(),$("adminPassword").value
- );
- if(result.user.uid!==ADMIN_UID){
- await signOut(auth);
- $("loginMessage").textContent="Unauthorized account.";
- }
- }catch(e){
- $("loginMessage").textContent="Login error: "+e.message;
- }
-};
-
-onAuthStateChanged(auth,user=>{
- const admin=!!user&&user.uid===ADMIN_UID;
- $("loginBox").classList.toggle("hidden",admin);
- $("adminPanel").classList.toggle("hidden",!admin);
- if(admin){
- loadAdminProducts();
- loadAdminOrders();
- }
-});
-
-window.logoutAdmin=async()=>{
- await signOut(auth);
- cancelEdit();
-};
-
-async function loadShoes(){
- const box=$("products");
- box.textContent="Loading Shoes...";
- try{
- const snap=await getDocs(collection(db,"products"));
- box.innerHTML="";
- let count=0;
-
- snap.forEach(item=>{
- const p=item.data();
- if(!p.name||!p.imageUrl||Number(p.price)<=0)return;
- if(p.isAvailable===false)return;
-
- count++;
- const card=document.createElement("div");
- card.className="card product";
-
- card.innerHTML=`
- <img src="${safe(p.imageUrl)}" alt="${safe(p.name)}">
- <h3>${safe(p.name)}</h3>
- <p>${safe(p.description||"")}</p>
- <p><b>Sizes:</b> ${safe(p.size||"Contact us")}</p>
- <p><b>Color:</b> ${safe(p.color||"Available")}</p>
- <p class="price">Rs. ${money(p.price)}</p>
- <button class="green addCart">Add to Cart</button>
- <button class="purple share">Share</button>
- `;
-
- card.querySelector("img").onerror=function(){
- this.alt="Image unavailable";
- this.style.display="none";
- };
-
- card.querySelector(".addCart").onclick=()=>{
- const existing=cart.find(x=>x.id===item.id);
- if(existing)existing.quantity++;
- else cart.push({
- id:item.id,name:p.name,price:Number(p.price),
- size:p.size||"",quantity:1
- });
- renderCart();
- $("cart").scrollIntoView({behavior:"smooth"});
- };
-
- card.querySelector(".share").onclick=()=>{
- const text=`${p.name}\nPrice: Rs. ${p.price}\nSizes: ${p.size}\n${location.href}`;
- window.open("https://api.whatsapp.com/send?text="+encodeURIComponent(text),"_blank");
- };
-
- box.appendChild(card);
- });
-
- if(!count)box.innerHTML="<div class='card'>No shoes available yet.</div>";
-
- }catch(e){
- box.innerHTML="<div class='card'>Products load nahi huay. Firebase Rules check karein.</div>";
- console.error(e);
- }
+async function loadProducts(){
+  try {
+    const snap = await getDocs(collection(db,"products"));
+    productsCache = snap.docs.map(d => ({id:d.id,...d.data()}));
+    renderProducts();
+    renderAdminProducts();
+    const requested = new URLSearchParams(location.search).get("product");
+    if(requested){
+      const found = productsCache.find(p => p.id === requested);
+      if(found) setTimeout(() => {
+        const el = document.getElementById("shoes");
+        el.scrollIntoView({behavior:"smooth"});
+        alert(found.name + " — " + money(found.price) + "\\nSizes: " + (found.size || "Contact us"));
+      },300);
+    }
+  } catch(e) {
+    $("products").innerHTML = "<p>Products could not load: " + safe(e.message) + "</p>";
+  }
 }
 
 function renderCart(){
- const box=$("cartItems");
- box.innerHTML="";
-
- if(!cart.length){
- box.textContent="Your cart is empty.";
- $("cartTotal").textContent="Total: Rs. 0";
- return;
- }
-
- let total=0;
-
- cart.forEach((item,index)=>{
- total+=item.price*item.quantity;
-
- const row=document.createElement("div");
- row.className="order-row";
-
- row.innerHTML=`
- <b>${safe(item.name)}</b><br>
- Price: Rs. ${money(item.price)}<br>
- Sizes: ${safe(item.size)}<br>
- Quantity: ${item.quantity}<br>
- <button class="green plus">+</button>
- <button class="purple minus">-</button>
- <button class="red remove">Remove</button>
- `;
-
- row.querySelector(".plus").onclick=()=>{
- item.quantity++;renderCart();
- };
- row.querySelector(".minus").onclick=()=>{
- item.quantity--;
- if(item.quantity<=0)cart.splice(index,1);
- renderCart();
- };
- row.querySelector(".remove").onclick=()=>{
- cart.splice(index,1);renderCart();
- };
-
- box.appendChild(row);
- });
-
- $("cartTotal").textContent="Total: Rs. "+money(total);
+  const box = $("cartItems");
+  if(!cart.length){box.textContent="Your cart is empty.";$("cartTotal").textContent="Total: Rs. 0";return;}
+  box.innerHTML = cart.map((item,i)=>`
+    <div class="cart-row">
+      <div><b>${safe(item.name)}</b><br><span class="small">Size: ${safe(item.size)} · ${money(item.price)} each</span></div>
+      <div class="qty">
+        <button class="secondary" onclick="changeQty(${i},-1)">−</button>
+        <b>${item.qty}</b>
+        <button class="secondary" onclick="changeQty(${i},1)">+</button>
+        <button class="danger" onclick="removeCartItem(${i})">Remove</button>
+      </div>
+    </div>`).join("");
+  const total = cart.reduce((s,x)=>s+x.price*x.qty,0);
+  $("cartTotal").textContent="Total: "+money(total);
 }
+window.changeQty = (i,n)=>{if(!cart[i])return;cart[i].qty+=n;if(cart[i].qty<1)cart.splice(i,1);renderCart();};
+window.removeCartItem = i=>{cart.splice(i,1);renderCart();};
 
-window.placeOrder=async()=>{
- const name=$("customerName").value.trim();
- const phone=$("customerPhone").value.trim();
- const address=$("customerAddress").value.trim();
- const output=$("orderMessage");
-
- if(!cart.length){
- output.textContent="Please add shoes to your cart.";
- return;
- }
- if(!name||!phone||!address){
- output.textContent="Please enter your name, phone and address.";
- return;
- }
-
- const total=cart.reduce((sum,p)=>sum+p.price*p.quantity,0);
- const items=cart.map(p=>({
- productId:p.id,
- name:p.name,
- price:p.price,
- size:p.size,
- quantity:p.quantity
- }));
-
- const button=document.querySelector("#cart button.green");
- button.disabled=true;
- output.textContent="Saving your order...";
-
- try{
- const order={
- customerName:name,
- customerPhone:phone,
- customerAddress:address,
- items,
- total,
- status:"Pending",
- createdAt:serverTimestamp()
- };
-
- const result=await addDoc(collection(db,"orders"),order);
-
- let message=
- `New Order - H Khan King Shoes\nOrder ID: ${result.id}\n`+
- `Customer: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n`;
-
- items.forEach(p=>{
- message+=`${p.name} | Size: ${p.size} | Qty: ${p.quantity} | Rs. ${p.price}\n`;
- });
-
- message+=`\nTotal: Rs. ${total}`;
-
- cart=[];
- renderCart();
-
- output.textContent="Order saved! WhatsApp par order details bhejein.";
-
- window.open(
- "https://api.whatsapp.com/send?phone="+WHATSAPP+"&text="+encodeURIComponent(message),
- "_blank"
- );
-
- }catch(e){
- output.textContent="Order error: "+e.message;
- }finally{
- button.disabled=false;
- }
+window.placeOrder = async function(){
+  if(!cart.length) return alert("Please add shoes to your cart first.");
+  const customerName=$("customerName").value.trim();
+  const customerPhone=$("customerPhone").value.trim();
+  const customerAddress=$("customerAddress").value.trim();
+  if(!customerName || !customerPhone || !customerAddress) return alert("Please enter your name, mobile number and delivery address.");
+  const total=cart.reduce((s,x)=>s+x.price*x.qty,0);
+  const items=cart.map(x=>({productId:x.id,name:x.name,price:x.price,size:x.size,quantity:x.qty,lineTotal:x.price*x.qty}));
+  const btn=$("placeOrderBtn");btn.disabled=true;btn.textContent="Sending order...";
+  try{
+    await addDoc(collection(db,"orders"),{
+      customerName,customerPhone,customerAddress,items,total,status:"Pending",createdAt:serverTimestamp()
+    });
+    const lines=items.map(x=>`${x.name} | Size ${x.size} | Qty ${x.quantity} | ${money(x.lineTotal)}`).join("\\n");
+    const message=`New Order - H Khan King Shoes\\nName: ${customerName}\\nPhone: ${customerPhone}\\nAddress: ${customerAddress}\\n\\n${lines}\\n\\nTotal: ${money(total)}`;
+    cart=[];renderCart();
+    window.open("https://wa.me/"+WHATSAPP+"?text="+encodeURIComponent(message),"_blank");
+    alert("Your order has been submitted. Please send the WhatsApp message to confirm.");
+  }catch(e){alert("Order could not be saved: "+e.message);}
+  finally{btn.disabled=false;btn.textContent="Confirm Order";}
 };
 
-/* IMAGE GALLERY */
+window.adminLogin = async function(){
+  const email=$("adminEmail").value.trim(), password=$("adminPassword").value;
+  if(!email||!password)return alert("Enter admin email and password.");
+  try{await signInWithEmailAndPassword(auth,email,password);}
+  catch(e){$("adminMessage").textContent="Login error: "+e.message;}
+};
+window.adminLogout = ()=>signOut(auth);
 
-window.previewImage=()=>{
- const file=$("shoeFile").files[0];
- const img=$("preview");
+onAuthStateChanged(auth,user=>{
+  const isAdmin=!!user && user.uid===ADMIN_UID;
+  $("loginBox").classList.toggle("hidden",isAdmin);
+  $("adminArea").classList.toggle("hidden",!isAdmin);
+  if(user && !isAdmin){$("adminMessage").textContent="This account is not authorized as admin.";signOut(auth);}
+  else if(isAdmin){$("adminMessage").textContent="Admin login successful.";loadAdminData();}
+});
 
- if(!file){
- img.style.display="none";return;
- }
+$("pImageUrl").addEventListener("input",()=>{
+  const url=$("pImageUrl").value.trim();
+  if(url){$("imagePreview").src=url;$("imagePreviewBox").classList.remove("hidden");}
+  else $("imagePreviewBox").classList.add("hidden");
+  $("imagePreview").onerror=()=>{$("imagePreviewBox").classList.add("hidden");};
+  $("imagePreview").onload=()=>{$("imagePreviewBox").classList.remove("hidden");};
+});
 
- if(!file.type.startsWith("image/")){
- alert("Please select an image.");
- $("shoeFile").value="";
- return;
- }
+$("productForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const user=auth.currentUser;
+  if(!user || user.uid!==ADMIN_UID)return alert("Admin login required.");
+  const id=$("editId").value;
+  const data={
+    name:$("pName").value.trim(),
+    price:Number($("pPrice").value),
+    size:$("pSizes").value.trim(),
+    color:$("pColor").value.trim(),
+    category:$("pCategory").value.trim(),
+    productCode:$("pCode").value.trim(),
+    description:$("pDescription").value.trim(),
+    imageUrl:$("pImageUrl").value.trim(),
+    isAvailable:$("pAvailable").checked,
+    updatedAt:serverTimestamp()
+  };
+  if(!data.name || !data.imageUrl || !Number.isFinite(data.price) || data.price<=0)return alert("Enter shoe name, a valid price and image URL.");
+  const btn=$("saveProductBtn");btn.disabled=true;btn.textContent="Saving...";
+  try{
+    if(id) await updateDoc(doc(db,"products",id),data);
+    else {data.createdAt=serverTimestamp();await addDoc(collection(db,"products"),data);}
+    alert(id?"Product updated successfully.":"Product added successfully.");
+    resetProductForm();await loadProducts();
+  }catch(err){alert("Save error: "+err.message);}
+  finally{btn.disabled=false;btn.textContent="Save Product";}
+});
 
- if(file.size>5*1024*1024){
- alert("Image must be under 5 MB.");
- $("shoeFile").value="";
- return;
- }
-
- img.src=URL.createObjectURL(file);
- img.style.display="block";
+window.resetProductForm=function(){
+  $("productForm").reset();$("editId").value="";$("pAvailable").checked=true;
+  $("formHeading").textContent="Add New Shoes";$("imagePreviewBox").classList.add("hidden");
 };
 
-/* ADD OR UPDATE PRODUCT */
-
-window.saveShoe=async()=>{
- const user=auth.currentUser;
- const output=$("adminMessage");
-
- if(!user||user.uid!==ADMIN_UID){
- output.textContent="Admin login required.";return;
- }
-
- const name=$("shoeName").value.trim();
- const price=Number($("shoePrice").value);
- const size=$("shoeSize").value.trim();
- const color=$("shoeColor").value.trim();
- const description=$("shoeDescription").value.trim();
- const file=$("shoeFile").files[0];
-
- if(!name||price<=0||!size){
- output.textContent="Enter name, price and sizes.";
- return;
- }
-
- if(!editingId&&!file){
- output.textContent="Please select a shoe picture.";
- return;
- }
-
- const button=$("saveButton");
- button.disabled=true;
- output.textContent="Saving product...";
-
- try{
- let imageUrl=editingImage;
-
- if(file){
- const fileName=Date.now()+"_"+file.name.replace(/[^a-zA-Z0-9._-]/g,"_");
- const imageRef=ref(storage,"shoes/"+fileName);
- await uploadBytes(imageRef,file);
- imageUrl=await getDownloadURL(imageRef);
- }
-
- const product={
- name,
- category:"Shoes",
- price,
- size,
- color,
- description,
- imageUrl,
- isAvailable:true,
- updatedAt:serverTimestamp()
- };
-
- if(editingId){
- await updateDoc(doc(db,"products",editingId),product);
- output.textContent="Product updated!";
- }else{
- product.createdAt=serverTimestamp();
- await addDoc(collection(db,"products"),product);
- output.textContent="New shoe added!";
- }
-
- cancelEdit();
- await loadShoes();
- await loadAdminProducts();
-
- }catch(e){
- output.textContent="Error: "+e.message;
- console.error(e);
- }finally{
- button.disabled=false;
- }
+function renderAdminProducts(){
+  if(!auth.currentUser || auth.currentUser.uid!==ADMIN_UID)return;
+  const box=$("adminProducts");
+  if(!productsCache.length){box.textContent="No products found.";return;}
+  box.innerHTML=productsCache.map(p=>`
+    <div class="order-row">
+      <div><b>${safe(p.name || "Unnamed product")}</b><br><span class="small">${money(p.price)} · ${safe(p.size || "No sizes")}</span></div>
+      <div class="actions">
+        <button class="secondary" onclick="editProduct('${p.id}')">Edit</button>
+        <button class="danger" onclick="deleteProduct('${p.id}')">Delete</button>
+      </div>
+    </div>`).join("");
+}
+window.editProduct=function(id){
+  const p=productsCache.find(x=>x.id===id);if(!p)return;
+  $("editId").value=id;$("pName").value=p.name||"";$("pPrice").value=p.price??"";
+  $("pSizes").value=p.size||"";$("pColor").value=p.color||"";$("pCategory").value=p.category||"";
+  $("pCode").value=p.productCode||"";$("pDescription").value=p.description||"";
+  $("pImageUrl").value=p.imageUrl||"";$("pAvailable").checked=p.isAvailable!==false;
+  if(p.imageUrl){$("imagePreview").src=p.imageUrl;$("imagePreviewBox").classList.remove("hidden");}
+  $("formHeading").textContent="Edit Shoes";$("productForm").scrollIntoView({behavior:"smooth"});
+};
+window.deleteProduct=async function(id){
+  if(!confirm("Are you sure you want to delete this shoe?"))return;
+  try{await deleteDoc(doc(db,"products",id));await loadProducts();alert("Product deleted.");}
+  catch(e){alert("Delete error: "+e.message);}
 };
 
-/* ADMIN PRODUCTS */
-
-async function loadAdminProducts(){
- if(auth.currentUser?.uid!==ADMIN_UID)return;
-
- const box=$("adminProducts");
- box.textContent="Loading...";
-
- try{
- const snap=await getDocs(collection(db,"products"));
- box.innerHTML="";
-
- snap.forEach(item=>{
- const p=item.data();
- const row=document.createElement("div");
- row.className="card";
-
- const title=document.createElement("b");
- title.textContent=p.name+" - Rs. "+money(p.price);
-
- const edit=document.createElement("button");
- edit.textContent="Edit";
- edit.onclick=()=>editShoe(item.id,p);
-
- const del=document.createElement("button");
- del.className="red";
- del.textContent="Delete";
- del.onclick=()=>deleteShoe(item.id,p);
-
- row.append(title,document.createElement("br"),edit,del);
- box.appendChild(row);
- });
-
- }catch(e){
- box.textContent="Error: "+e.message;
- }
+async function loadAdminData(){
+  await loadProducts();
+  try{
+    const snap=await getDocs(query(collection(db,"orders"),orderBy("createdAt","desc")));
+    const orders=snap.docs.map(d=>({id:d.id,...d.data()}));
+    const box=$("adminOrders");
+    if(!orders.length){box.textContent="No customer orders yet.";return;}
+    box.innerHTML=orders.map(o=>{
+      const itemText=(o.items||[]).map(i=>`${safe(i.name)} — Size ${safe(i.size)} — Qty ${safe(i.quantity)} — ${money(i.lineTotal)}`).join("<br>");
+      return `<div class="panel">
+        <b>Order: ${safe(o.id)}</b>
+        <p><b>Customer:</b> ${safe(o.customerName)} | ${safe(o.customerPhone)}<br><b>Address:</b> ${safe(o.customerAddress)}</p>
+        <p>${itemText}</p><b>Total: ${money(o.total)}</b>
+        <p><label>Status</label>
+        <select id="status-${o.id}">
+          ${["Pending","Confirmed","Shipped","Delivered","Cancelled"].map(s=>`<option ${o.status===s?"selected":""}>${s}</option>`).join("")}
+        </select>
+        <button onclick="updateOrderStatus('${o.id}')">Update Status</button></p>
+      </div>`;
+    }).join("");
+  }catch(e){$("adminOrders").innerHTML="Orders error: "+safe(e.message);}
 }
-
-function editShoe(id,p){
- editingId=id;
- editingImage=p.imageUrl||"";
-
- $("shoeName").value=p.name||"";
- $("shoePrice").value=p.price||"";
- $("shoeSize").value=p.size||"";
- $("shoeColor").value=p.color||"";
- $("shoeDescription").value=p.description||"";
- $("shoeFile").value="";
-
- $("formHeading").textContent="Edit Shoes";
- $("saveButton").textContent="Update Shoes";
-
- $("preview").src=editingImage;
- $("preview").style.display=editingImage?"block":"none";
-
- $("admin").scrollIntoView({behavior:"smooth"});
-}
-
-window.cancelEdit=()=>{
- editingId=null;
- editingImage="";
-
- ["shoeName","shoePrice","shoeSize","shoeColor",
- "shoeDescription","shoeFile"].forEach(id=>$(id).value="");
-
- $("preview").style.display="none";
- $("formHeading").textContent="Add New Shoes";
- $("saveButton").textContent="Add Shoes";
+window.updateOrderStatus=async function(id){
+  const status=$("status-"+id).value;
+  try{await updateDoc(doc(db,"orders",id),{status,updatedAt:serverTimestamp()});alert("Order status updated.");}
+  catch(e){alert("Update error: "+e.message);}
 };
-
-/* DELETE PRODUCT */
-
-async function deleteShoe(id,p){
- if(!confirm("Delete this shoe?"))return;
-
- try{
- await deleteDoc(doc(db,"products",id));
-
- if(p.imageUrl){
- try{
- const imageRef=ref(storage,p.imageUrl);
- await deleteObject(imageRef);
- }catch(e){
- console.log("Old image not deleted:",e.message);
- }
- }
-
- await loadShoes();
- await loadAdminProducts();
-
- }catch(e){
- alert("Delete error: "+e.message);
- }
-}
-
-/* ADMIN ORDERS */
-
-async function loadAdminOrders(){
- if(auth.currentUser?.uid!==ADMIN_UID)return;
-
- const box=$("adminOrders");
- box.textContent="Loading Orders...";
-
- try{
- const snap=await getDocs(
- query(collection(db,"orders"),orderBy("createdAt","desc"))
- );
-
- box.innerHTML="";
-
- if(snap.empty){
- box.textContent="No orders yet.";
- return;
- }
-
- snap.forEach(item=>{
- const o=item.data();
- const row=document.createElement("div");
- row.className="card";
-
- const details=(o.items||[]).map(p=>
- `${p.name} | Size ${p.size} | Qty ${p.quantity} | Rs. ${p.price}`
- ).join("\n");
-
- row.innerHTML=`
- <b>Order ID:</b> ${safe(item.id)}<br>
- <b>Customer:</b> ${safe(o.customerName)}<br>
- <b>Phone:</b> ${safe(o.customerPhone)}<br>
- <b>Address:</b> ${safe(o.customerAddress)}<br>
- <b>Products:</b><pre style="white-space:pre-wrap">${safe(details)}</pre>
- <b>Total:</b> Rs. ${money(o.total)}<br>
- <b>Status:</b> <span class="badge">${safe(o.status)}</span>
- `;
-
- const select=document.createElement("select");
- ["Pending","Confirmed","Shipped","Delivered","Cancelled"].forEach(status=>{
- const option=document.createElement("option");
- option.value=status;
- option.textContent=status;
- option.selected=o.status===status;
- select.appendChild(option);
- });
-
- const update=document.createElement("button");
- update.className="green";
- update.textContent="Update Status";
- update.onclick=async()=>{
- try{
- await updateDoc(doc(db,"orders",item.id),{
- status:select.value,
- updatedAt:serverTimestamp()
- });
- alert("Order status updated!");
- loadAdminOrders();
- }catch(e){alert(e.message);}
- };
-
- const contact=document.createElement("button");
- contact.className="purple";
- contact.textContent="WhatsApp Customer";
- contact.onclick=()=>{
- const number=String(o.customerPhone||"").replace(/\D/g,"");
- window.open("https://api.whatsapp.com/send?phone="+number,"_blank");
- };
-
- row.append(select,update,contact);
- box.appendChild(row);
- });
-
- }catch(e){
- box.textContent="Orders error: "+e.message;
- }
-}
-
-loadShoes();
-
+$("year").textContent=new Date().getFullYear();
+renderCart();
+loadProducts();
 </script>
 </body>
-  </html>
-  
+</html>
