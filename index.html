@@ -5,29 +5,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>H Khan King Shoes</title>
 <meta name="description" content="H Khan King Shoes - Quality Shoes in Pakistan">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="H Khan King Shopping">
+<meta property="og:title" content="H Khan King Shopping — Shop Now">
+<meta property="og:description" content="Explore shoes, choose your size and colour, and place your order online.">
+<meta property="og:url" content="">
+<meta name="theme-color" content="#ffffff">
 <style>
 *{box-sizing:border-box}
-:root{--dark:#171717;--gold:#d6a62e;--light:#f5f5f5;--red:#d62828;--green:#168447}
-body{margin:0;font-family:Arial,sans-serif;background:#dceeff;color:#222}
-header{background:var(--dark);color:#fff;padding:16px 4%;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.brand{font-size:23px;font-weight:800;color:#f2c14e}
+:root{--dark:#ffffff;--gold:#f2b705;--light:#ffffff;--red:#e63946;--green:#168447;--blue:#1877f2;--purple:#7b2cbf;--pink:#e83e8c;--teal:#008c95}
+body{margin:0;font-family:Arial,sans-serif;background:#fff;color:#333}
+header{background:#fff;color:#222;padding:16px 4%;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:3px solid #f2b705;box-shadow:0 2px 12px #0000000d}
+.brand{font-size:23px;font-weight:800;background:linear-gradient(90deg,#e63946,#f2b705,#168447,#1877f2,#7b2cbf);-webkit-background-clip:text;background-clip:text;color:transparent}
 nav{display:flex;gap:15px;flex-wrap:wrap}
-nav a{color:#fff;text-decoration:none;font-weight:bold}
-.hero{background:linear-gradient(120deg,#191919,#484848);color:#fff;text-align:center;padding:42px 15px}
-.hero h1{font-size:34px;margin:0 0 10px}
+nav a{color:#1877f2;text-decoration:none;font-weight:bold} nav a:nth-child(2){color:#e63946} nav a:nth-child(3){color:#168447} nav a:nth-child(4){color:#7b2cbf}
+.hero{background:#fff;color:#333;text-align:center;padding:42px 15px;border-bottom:1px solid #eee}
+.hero h1{font-size:34px;margin:0 0 10px;background:linear-gradient(90deg,#e63946,#f2b705,#168447,#1877f2,#7b2cbf);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero p{margin:8px 0 18px}
 button,.btn{border:0;border-radius:7px;padding:11px 15px;font-weight:bold;cursor:pointer;background:var(--gold);color:#171717}
 button:hover,.btn:hover{opacity:.88}
 button:disabled{opacity:.5;cursor:not-allowed}
 .container{width:min(1150px,94%);margin:25px auto}
-.section-title{font-size:25px;margin:25px 0 15px}
+.section-title{font-size:25px;margin:25px 0 15px;color:#1877f2}
 .products{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
-.card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px #00000012}
+.card{background:#fff;border:1px solid #eee;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px #0000000d}
 .product-image{width:100%;aspect-ratio:16/9;min-height:220px;max-height:360px;background:#f1f1f1;display:flex;align-items:center;justify-content:center;padding:8px}
 .card img{display:block;width:100%;height:100%;object-fit:contain}
 .card-body{padding:14px}
 .card h3{margin:4px 0 8px}
-.price{font-size:20px;font-weight:bold;color:#b17b00}
+.price{font-size:20px;font-weight:bold;color:#168447}
 .old-price{font-size:14px;color:#888;text-decoration:line-through;margin-left:7px;font-weight:normal}
 .discount-badge{display:inline-block;background:#d62828;color:#fff;padding:5px 9px;border-radius:5px;font-size:13px;font-weight:bold;margin:5px 0}
 .muted{color:#666;font-size:14px;line-height:1.5}
@@ -35,8 +41,8 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .actions button{flex:1;min-width:100px}
 .share-btn{background:#e8e8e8}
 .buy-now{background:#168447;color:#fff}
-.panel{background:#fff;border-radius:12px;padding:18px;margin:20px 0;box-shadow:0 2px 12px #00000010}
-input,textarea,select{width:100%;padding:11px;border:1px solid #ccc;border-radius:7px;margin:6px 0 12px;font:inherit}
+.panel{background:#fff;border:1px solid #eee;border-radius:12px;padding:18px;margin:20px 0;box-shadow:0 2px 12px #0000000d}
+input,textarea,select{width:100%;padding:11px;border:1px solid #cfd8e3;border-radius:7px;margin:6px 0 12px;font:inherit;background:#fff;color:#333} input:focus,textarea:focus,select:focus{outline:2px solid #1877f2;border-color:#1877f2}
 textarea{min-height:75px;resize:vertical}
 label{font-weight:bold;font-size:14px}
 .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
@@ -54,12 +60,12 @@ label{font-weight:bold;font-size:14px}
 .option-group{margin:12px 0}
 .option-title{display:block;font-weight:bold;font-size:14px;margin-bottom:7px}
 .option-list{display:flex;flex-wrap:wrap;gap:7px}
-.option-chip{background:#e8edf3;color:#222;border:1px solid #c7d0da;border-radius:6px;padding:8px 12px;min-width:42px}
-.option-chip.selected{background:#d62828;color:#fff;border-color:#d62828}
+.option-chip{background:#fff;color:#1877f2;border:1px solid #1877f2;border-radius:6px;padding:8px 12px;min-width:42px}
+.option-chip.selected{background:#1877f2;color:#fff;border-color:#1877f2}
 .quantity-options{display:flex;flex-wrap:wrap;gap:7px}
 .free-delivery{display:inline-block;background:#168447;color:#fff;padding:6px 10px;border-radius:6px;font-weight:bold;margin:5px 0}
-footer{text-align:center;background:#171717;color:#ddd;padding:22px;margin-top:35px}
-footer a{color:#f2c14e}
+footer{text-align:center;background:#fff;color:#555;padding:22px;margin-top:35px;border-top:3px solid #f2b705}
+footer a{color:#1877f2;font-weight:bold}
 @media(max-width:600px){.hero h1{font-size:27px}header{justify-content:center;text-align:center}nav{justify-content:center}.product-image{min-height:190px}}
 </style>
 </head>
@@ -74,7 +80,7 @@ footer a{color:#f2c14e}
   <h1>H Khan King Shoes</h1>
   <p>Quality Shoes • Best Prices • 5% Discount on All Shoes</p>
   <p class="free-delivery">FREE DELIVERY ALL OVER PAKISTAN — No Delivery Charges</p>
-  <button onclick="shareWebsite()">Share Website</button>
+  <button onclick="document.getElementById('shoes').scrollIntoView({behavior:'smooth'})" style="background:#168447;color:#fff">Shop Now</button> <button onclick="shareWebsite()">Share Website</button>
 </section>
 <main class="container">
   <section id="shoes">
@@ -397,6 +403,8 @@ async function loadAdminData(){
 }
 window.updateOrderStatus=async function(id){const status=$("status-"+id).value;try{await updateDoc(doc(db,"orders",id),{status,updatedAt:serverTimestamp()});alert("Order status updated.");}catch(e){alert("Update error: "+e.message);}};
 $("year").textContent=new Date().getFullYear();
+const ogUrl=document.querySelector('meta[property="og:url"]');
+if(ogUrl)ogUrl.setAttribute("content",location.href.split("#")[0]);
 renderCart();loadProducts();
 </script>
 </body>
